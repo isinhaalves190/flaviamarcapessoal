@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flávia Mariana — Base Estratégica</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:        #1a1410;
+  --dust:       #f5f0ea;
+  --warm:       #ede5d8;
+  --clay:       #8b5e3c;
+  --rust:       #a84c2c;
+  --sage:       #4a6350;
+  --plum:       #5c3d5e;
+  --gold:       #b8882e;
+  --mid:        #6b5c4e;
+  --rule:       #c9b9a4;
+  --light-rule: #e8ddd2;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--dust);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── TAB BAR ── */
+.tabbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 2px solid var(--rust);
+}
+.tabbar::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-right: 1px solid #2e2521;
+  color: #7a6a5e;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 0 22px;
+  height: 48px;
+  cursor: pointer;
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.tab-btn:first-child { border-left: 1px solid #2e2521; }
+.tab-btn:hover { color: var(--dust); }
+.tab-btn.active {
+  color: var(--dust);
+  background: var(--rust);
+  border-color: var(--rust);
+}
+.brand-label {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 0 24px;
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  color: #4a3d35;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  border-left: 1px solid #2e2521;
+}
+
+/* ── PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── LAYOUT HELPERS ── */
+.page { padding: 56px 60px; max-width: 1200px; margin: 0 auto; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.block-label {
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.spacer { margin-bottom: 36px; }
+
+/* ── CARDS ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--light-rule);
+  padding: 24px;
+}
+.card-dark { background: var(--ink); color: var(--dust); border: none; padding: 24px; }
+.card-rust { background: var(--rust); color: #fff; border: none; padding: 24px; }
+.card-sage { background: var(--sage); color: #fff; border: none; padding: 24px; }
+.card-plum { background: var(--plum); color: #fff; border: none; padding: 24px; }
+.card-warm { background: var(--warm); border: 1px solid var(--light-rule); padding: 24px; }
+
+.c-label {
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--mid);
+}
+.card-dark .c-label,
+.card-rust .c-label,
+.card-sage .c-label,
+.card-plum .c-label { color: rgba(255,255,255,.5); }
+
+.c-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.card p, .card-warm p { font-size: 13px; line-height: 1.65; color: var(--mid); }
+.card-dark p { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.7); }
+.card-rust p, .card-sage p, .card-plum p { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.8); }
+
+/* ── QUOTE ── */
+.quote {
+  border-left: 3px solid var(--rust);
+  padding: 20px 24px;
+  background: #fff;
+}
+.quote p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.quote small {
+  display: block;
+  font-size: 11px;
+  color: var(--mid);
+  margin-top: 10px;
+  letter-spacing: .06em;
+}
+
+/* ── LIST ── */
+.item-list { list-style: none; }
+.item-list li {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--light-rule);
+  font-size: 13px;
+  line-height: 1.55;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.item-list li:last-child { border-bottom: none; }
+.im {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  color: var(--rust);
+  min-width: 14px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* ── TABLE ── */
+.atable { width: 100%; border-collapse: collapse; }
+.atable tr { border-bottom: 1px solid var(--light-rule); }
+.atable th {
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--mid);
+  font-weight: 600;
+  padding: 10px 14px;
+  text-align: left;
+  background: var(--warm);
+}
+.atable td {
+  padding: 12px 14px;
+  font-size: 13px;
+  vertical-align: top;
+  line-height: 1.55;
+  background: #fff;
+}
+.atable td:first-child {
+  font-weight: 600;
+  color: var(--clay);
+  font-size: 11px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  width: 200px;
+}
+
+/* ── TAGS ── */
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  font-size: 11px;
+  padding: 5px 11px;
+  border: 1px solid var(--rule);
+  color: var(--clay);
+  background: transparent;
+  letter-spacing: .03em;
+}
+.tag-dark { background: var(--ink); color: var(--dust); border-color: var(--ink); }
+.tag-rust { background: var(--rust); color: #fff; border-color: var(--rust); }
+.tag-warn { background: transparent; border: 1px solid #c0392b; color: #c0392b; }
+
+/* ── PROHIBIT ── */
+.prohib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.prohib-item {
+  background: #fff5f5;
+  border: 1px solid #f0d0d0;
+  padding: 10px 14px 10px 28px;
+  font-size: 12px;
+  color: #8b2020;
+  font-style: italic;
+  position: relative;
+}
+.prohib-item::before {
+  content: '✕';
+  position: absolute;
+  left: 10px;
+  font-size: 10px;
+  font-style: normal;
+  color: #c0392b;
+  font-weight: 700;
+}
+
+/* ── JOURNEY ── */
+.journey { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--light-rule); overflow: hidden; }
+.j-step { padding: 24px 20px; border-right: 1px solid var(--light-rule); }
+.j-step:last-child { border-right: none; }
+.j-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 10px;
+  color: var(--light-rule);
+}
+.j-title { font-weight: 600; font-size: 13px; color: var(--ink); margin-bottom: 7px; }
+.j-desc { font-size: 12px; color: var(--mid); line-height: 1.55; }
+
+/* ── VOICE COMPARE ── */
+.voice-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--light-rule); overflow: hidden; }
+.vc-col { padding: 28px; }
+.vc-col:first-child { background: #f9f4f0; border-right: 1px solid var(--light-rule); }
+.vc-col:last-child { background: var(--ink); }
+.vc-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 14px; font-weight: 600; color: var(--mid); }
+.vc-col:last-child .vc-label { color: var(--rust); }
+.vc-text { font-size: 13px; line-height: 1.75; font-style: italic; color: var(--mid); }
+.vc-col:last-child .vc-text { color: #c9bfb4; font-style: normal; }
+
+/* ── ENEMY GRID ── */
+.enemy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--light-rule); border: 1px solid var(--light-rule); }
+.enemy-item { background: #fff; padding: 20px; font-size: 13px; color: var(--ink); line-height: 1.55; }
+.enemy-item strong { display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--rust); margin-bottom: 8px; font-weight: 600; }
+
+/* ── OFFER BOX ── */
+.offer-box {
+  background: var(--ink);
+  color: var(--dust);
+  padding: 32px 36px;
+  border-left: 4px solid var(--rust);
+  margin-bottom: 24px;
+}
+.offer-box h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 12px; }
+.offer-box p { font-size: 13px; color: #9a8878; line-height: 1.65; }
+
+/* ── STAT ROW ── */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--light-rule); border: 1px solid var(--light-rule); margin-bottom: 36px; overflow: hidden; }
+.stat-item { background: var(--ink); padding: 24px 20px; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--dust); line-height: 1; }
+.stat-lbl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #7a6a5e; margin-top: 6px; }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--light-rule); margin: 36px 0; }
+
+@media (max-width: 860px) {
+  .page { padding: 32px 20px; }
+  .grid-2, .grid-3, .grid-4, .two-col { grid-template-columns: 1fr; }
+  .journey { grid-template-columns: 1fr 1fr; }
+  .voice-compare, .enemy-grid { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .prohib-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TAB BAR -->
+<nav class="tabbar">
+  <button class="tab-btn active" onclick="showTab('resumo')">Visão Geral</button>
+  <button class="tab-btn" onclick="showTab('identidade')">Identidade</button>
+  <button class="tab-btn" onclick="showTab('avatar')">Avatar</button>
+  <button class="tab-btn" onclick="showTab('jornada')">Jornada de Compra</button>
+  <button class="tab-btn" onclick="showTab('voz')">Tom de Voz</button>
+  <button class="tab-btn" onclick="showTab('inimigo')">Inimigo e Bandeiras</button>
+
+  <span class="brand-label">Flávia Mariana</span>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 1 — VISÃO GERAL
+════════════════════════════════════════════ -->
+<div class="panel active" id="panel-resumo">
+<div style="background:var(--ink);padding:64px 60px 52px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:16px;font-weight:600">Marca Pessoal · Estratégia Completa</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:700;color:var(--dust);line-height:1.1;margin-bottom:20px">Flávia Mariana<br><em style="font-style:italic;color:var(--rule)">Reconstrução emocional<br>para mulheres cristãs</em></h1>
+    <p style="font-size:14px;line-height:1.8;color:#9a8878;max-width:680px;border-left:2px solid var(--rust);padding-left:20px;margin-bottom:40px">Conduzir mulheres cristãs que passaram por separação, dor emocional, dependência afetiva ou perda de identidade a reconstruírem a consciência do próprio valor, assumirem o protagonismo da própria vida e se posicionarem com fé, clareza e responsabilidade.</p>
+    <div class="stat-row" style="margin-bottom:0;border:none;background:none;gap:20px;display:grid;grid-template-columns:repeat(4,auto)">
+      <div><span style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--dust)">30–45</span><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4a3d35;margin-top:4px">Faixa etária central</div></div>
+      <div><span style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--dust)">8</span><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4a3d35;margin-top:4px">Fases de jornada de compra</div></div>
+      <div><span style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--dust)">7</span><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4a3d35;margin-top:4px">Valores inegociáveis</div></div>
+      <div><span style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--dust)">12</span><div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4a3d35;margin-top:4px">Bandeiras defendidas</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <p class="block-label" style="margin-bottom:20px">Resumo estratégico por área</p>
+  <div class="grid-3 spacer">
+    <div class="card-dark">
+      <div class="c-label">Nicho</div>
+      <div class="c-title" style="color:var(--dust)">Quem ela atende</div>
+      <p>Mulheres cristãs que se perderam de si mesmas depois de relações, rupturas, rejeições, culpa ou ciclos de desvalorização — e querem reconstruir identidade e retomar o protagonismo da própria vida.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Proposta de valor</div>
+      <div class="c-title">O que ela entrega</div>
+      <p>A passagem da sobrevivência emocional para o protagonismo consciente — com fé integrada, método claro e confronto responsável. Não promessa rápida, não frases de consolo.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Diferencial central</div>
+      <div class="c-title">Por que ela é diferente</div>
+      <p>Combina trajetória vivida (não apenas estudada), base educativa sólida e integração real entre fé, consciência emocional e prática. Acolhe sem infantilizar, confronta sem agredir.</p>
+    </div>
+  </div>
+
+  <div class="quote spacer">
+    <p>Meu inimigo não é uma pessoa específica. É o sistema de crenças, relações e padrões que faz mulheres inteligentes, fortes e sensíveis esquecerem o próprio valor.</p>
+    <small>Inimigo comum da marca</small>
+  </div>
+
+  <div class="grid-2 spacer">
+    <div>
+      <p class="block-label">Avatar em uma frase</p>
+      <div class="card">
+        <p style="font-size:14px;font-style:italic;color:var(--ink);line-height:1.7">"Eu passei tempo demais me abandonando para caber na dor, na culpa e na expectativa dos outros. Agora eu quero voltar para mim e ser protagonista da minha vida."</p>
+        <p style="font-size:11px;color:var(--mid);margin-top:10px">Daniela, 37 anos — perfil central</p>
+      </div>
+    </div>
+    <div>
+      <p class="block-label">Produto principal recomendado</p>
+      <div class="card">
+        <div class="c-label">Grupo de reconstrução emocional</div>
+        <p>4 a 8 semanas, encontros semanais, temas progressivos, exercícios guiados, grupo de apoio com regras claras. Daniela não precisa apenas de informação — precisa de travessia organizada.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="block-label">O que a marca combate</p>
+  <div class="tags spacer">
+    <span class="tag-warn tag">Dependência emocional disfarçada de lealdade</span>
+    <span class="tag-warn tag">Culpa religiosa que paralisa</span>
+    <span class="tag-warn tag">Transformação superficial</span>
+    <span class="tag-warn tag">Silenciamento feminino</span>
+    <span class="tag-warn tag">Autoabandono crônico</span>
+    <span class="tag-warn tag">Promessa rápida de cura</span>
+    <span class="tag-warn tag">Fé usada para justificar desrespeito</span>
+  </div>
+
+  <p class="block-label">Regra de ouro da comunicação</p>
+  <div style="background:var(--ink);padding:24px 28px;border-left:4px solid var(--rust)">
+    <p style="font-family:'Playfair Display',serif;font-size:17px;color:var(--dust);line-height:1.6;font-style:italic">Escrevo para fazer a mulher pensar, não para fazê-la chorar. Se o texto só emociona sem gerar clareza ou movimento interno, ele falhou.</p>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 2 — IDENTIDADE
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-identidade">
+<div class="page">
+  <div class="section-title">02</div>
+  <h2 class="section-heading">Identidade de Marca</h2>
+
+  <div class="grid-3 spacer">
+    <div class="card-dark">
+      <div class="c-label">Missão</div>
+      <div class="c-title" style="color:var(--dust)">Por que a marca existe</div>
+      <p>Combater a ideia de que uma mulher precisa permanecer presa à culpa, ao julgamento ou à validação de quem a feriu para provar fé, força ou maturidade.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Proposta de valor</div>
+      <div class="c-title">O que entrega</div>
+      <p>Conduz mulheres cristãs que passaram por separação, dependência emocional, rejeição, culpa ou perda de identidade à reconstrução da consciência do próprio valor e ao protagonismo da própria vida.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Personalidade</div>
+      <div class="c-title">Como se apresenta</div>
+      <p>Presença firme, sensível e direta. Acolhe sem infantilizar, confronta sem agredir, nomeia o que a mulher sente mas ainda não consegue organizar em palavras.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="two-col spacer">
+    <div>
+      <p class="block-label">Valores inegociáveis</p>
+      <ul class="item-list">
+        <li><span class="im">1</span><div><strong>Fé com coerência</strong><br>Espiritualidade que direciona, nunca que paralisa ou usa culpa como instrumento de controle.</div></li>
+        <li><span class="im">2</span><div><strong>Verdade emocional</strong><br>Sem disfarce, sem romantização do sofrimento. Mudança real começa quando a pessoa para de fugir de si mesma.</div></li>
+        <li><span class="im">3</span><div><strong>Responsabilidade sem culpa</strong><br>Retomar poder de decisão, não carregar culpa eterna. São coisas distintas.</div></li>
+        <li><span class="im">4</span><div><strong>Posicionamento feminino</strong><br>Clareza sobre o que aceita e o que recusa. Posicionamento não é agressividade.</div></li>
+        <li><span class="im">5</span><div><strong>Educação como transformação</strong><br>Compreender padrões, não apenas se emocionar. A base é educativa e formativa.</div></li>
+        <li><span class="im">6</span><div><strong>Recomeço com dignidade</strong><br>Recomeçar exige estrutura emocional, decisão, renúncia, constância e coragem — não frases bonitas.</div></li>
+        <li><span class="im">7</span><div><strong>Autenticidade e coerência</strong><br>Presença que corresponde à vida real, não à imagem construída para aprovação.</div></li>
+      </ul>
+    </div>
+    <div>
+      <p class="block-label">Diferenciais estratégicos</p>
+      <div class="card" style="margin-bottom:14px">
+        <div class="c-label">Diferencial 1</div>
+        <div class="c-title">Trajetória vivida, não estudada</div>
+        <p>Fala de reconstrução emocional a partir de processos reais: separação, dependência emocional, julgamento religioso, terapia e decisões difíceis. A experiência pessoal entra para cumprir função no conteúdo, nunca como performance de sofrimento.</p>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="c-label">Diferencial 2</div>
+        <div class="c-title">Base educativa sólida</div>
+        <p>Experiência como professora, coordenadora pedagógica e mestre em educação dá repertório para conduzir processos humanos com responsabilidade e método, não apenas com empatia.</p>
+      </div>
+      <div class="card">
+        <div class="c-label">Diferencial 3</div>
+        <div class="c-title">Fé, consciência emocional e prática juntos</div>
+        <p>Não fica no discurso espiritual nem apenas na técnica psicológica. Integra as três dimensões com coerência — algo que nem o aconselhamento pastoral nem a maioria dos perfis de autoestima oferece.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label">Brand Story — de onde vem a autoridade</p>
+  <div class="grid-2 spacer">
+    <div class="card">
+      <div class="c-label">Trajetória</div>
+      <p style="color:var(--ink)">A marca nasce do encontro entre educação, fé, escuta, consciência emocional e reconstrução feminina. A história começou pela necessidade de sobreviver, amadurecer e se reconstruir diante de circunstâncias reais: perda do pai na adolescência, trabalho precoce, maternidade durante o mestrado, separação, dependência emocional, depressão e julgamento religioso.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Características mais marcantes</div>
+      <ul class="item-list">
+        <li><span class="im">·</span>Persistência diante de obstáculos concretos, não reais apenas no discurso</li>
+        <li><span class="im">·</span>Capacidade de recomeçar em múltiplos ciclos da vida pessoal e profissional</li>
+        <li><span class="im">·</span>Autenticidade e recusa em viver de aparências ou aceitar desrespeito por pertencimento</li>
+        <li><span class="im">·</span>Sensibilidade para histórias invisíveis — o que existe por trás do silêncio e da resistência</li>
+        <li><span class="im">·</span>Compromisso com o coletivo enraizado na prática educativa e sindical</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="block-label">Sensações que a marca precisa provocar</p>
+  <div class="grid-3">
+    <div class="card-rust">
+      <div class="c-label">Acolhimento sem acomodação</div>
+      <p>Espaço para a dor existe, mas também existe um chamado claro para sair do lugar onde essa dor virou identidade.</p>
+    </div>
+    <div class="card-plum">
+      <div class="c-label">Clareza e nomeação</div>
+      <p>A mulher entra em contato com a marca e consegue finalmente nomear o que antes parecia confuso: dependência, culpa, autoabandono, falta de limites.</p>
+    </div>
+    <div class="card-sage">
+      <div class="c-label">Incômodo produtivo</div>
+      <p>Quase um choque de realidade. Não para ferir — para interromper padrões. A mulher percebe quando está confundindo amor com dependência, perdão com retorno ao ciclo.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Confiança espiritual</div>
+      <p style="color:var(--mid)">A mulher percebe que pode reconstruir a vida sem negar a fé e sem aceitar interpretações religiosas que a mantêm pequena, culpada ou paralisada.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Autonomia</div>
+      <p style="color:var(--mid)">A presença da marca faz a mulher voltar a se perguntar o que ela quer, o que aceita, o que não negocia mais e quais decisões precisa tomar.</p>
+    </div>
+    <div class="card-dark">
+      <div class="c-label">Alívio sem apagamento</div>
+      <p>Não está sozinha. Existe caminho depois da ruptura. Mas a história não é apagada — ela é ressignificada com responsabilidade.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 3 — AVATAR
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-avatar">
+<div class="page">
+  <div class="section-title">03</div>
+  <h2 class="section-heading">Avatar de Cliente Ideal — Daniela</h2>
+
+  <div class="grid-2 spacer">
+    <div>
+      <div class="quote" style="margin-bottom:20px">
+        <p>Eu passei tempo demais me abandonando para caber na dor, na culpa e na expectativa dos outros. Agora eu quero voltar para mim e ser protagonista da minha vida.</p>
+        <small>Frase central do avatar</small>
+      </div>
+      <table class="atable">
+        <tr><th colspan="2">Perfil demográfico</th></tr>
+        <tr><td>Nome</td><td>Daniela</td></tr>
+        <tr><td>Idade central</td><td>37 anos</td></tr>
+        <tr><td>Faixa principal</td><td>30 a 45 anos</td></tr>
+        <tr><td>Identidade espiritual</td><td>Cristã, amadurecendo a fé sem culpa e sem passividade</td></tr>
+        <tr><td>Estado emocional</td><td>Funciona por fora, desconectada de si por dentro</td></tr>
+        <tr><td>Perfil profissional</td><td>Professora, profissional da saúde, funcionária pública, autônoma, empreendedora pequena</td></tr>
+        <tr><td>Renda</td><td>Algum poder de decisão — mas sente culpa de investir em si</td></tr>
+      </table>
+    </div>
+    <div>
+      <p class="block-label">Dor em camadas</p>
+      <div class="card-rust" style="margin-bottom:10px">
+        <div class="c-label">Dor de identidade</div>
+        <p>Não sabe quem é fora da dor, da culpa, das responsabilidades e da expectativa dos outros. Sente que se perdeu tentando sustentar o que a fazia mal.</p>
+      </div>
+      <div class="card-plum" style="margin-bottom:10px">
+        <div class="c-label">Dor espiritual</div>
+        <p>Quer se reconstruir, mas teme estar sendo egoísta, rebelde ou distante de Deus. Recebeu mensagens que misturaram fé com culpa.</p>
+      </div>
+      <div class="card-sage" style="margin-bottom:10px">
+        <div class="c-label">Dor emocional</div>
+        <p>Confunde amor com dependência, perdão com retorno, paciência com autoabandono e fé com passividade.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold)">
+        <div class="c-label">Dor social</div>
+        <p style="color:var(--mid)">Teme julgamento da igreja, da família, dos filhos, de outras mulheres e dela mesma. Sustenta uma performance de "estou bem" nos ambientes religiosos.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label" style="margin-bottom:20px">O que ela diz com as palavras dela</p>
+  <div class="grid-3 spacer">
+    <div class="card-warm">
+      <div class="c-label">Sobre si mesma</div>
+      <ul class="item-list">
+        <li><span class="im">·</span>"Eu não sei mais quem eu sou."</li>
+        <li><span class="im">·</span>"Eu sinto que me perdi de mim."</li>
+        <li><span class="im">·</span>"Eu cansei de parecer forte."</li>
+        <li><span class="im">·</span>"Eu quero me escolher, mas me sinto egoísta."</li>
+        <li><span class="im">·</span>"Eu queria parar de aceitar migalhas emocionais."</li>
+      </ul>
+    </div>
+    <div class="card-warm">
+      <div class="c-label">Sobre a fé</div>
+      <ul class="item-list">
+        <li><span class="im">·</span>"Eu oro, mas ainda me sinto culpada por querer recomeçar."</li>
+        <li><span class="im">·</span>"O pastor disse que eu precisava ter tido mais paciência. Isso ficou em mim."</li>
+        <li><span class="im">·</span>"Na igreja eu finjo que estou bem."</li>
+        <li><span class="im">·</span>"Me afastei da igreja. Não aguentava mais parecer forte quando estava destruída."</li>
+      </ul>
+    </div>
+    <div class="card-warm">
+      <div class="c-label">Sobre os filhos</div>
+      <ul class="item-list">
+        <li><span class="im">·</span>"Eu não quero que minha filha veja que eu aceitei ser tratada assim e ache que é normal."</li>
+        <li><span class="im">·</span>"Quero ser um exemplo de mulher que se levantou — mas ainda não consigo ser esse exemplo."</li>
+        <li><span class="im">·</span>"A culpa de estar emocionalmente ausente mesmo estando presente é a pior de todas."</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label" style="margin-bottom:20px">O que ela já tentou — e por que não funcionou</p>
+  <div class="grid-3 spacer">
+    <div class="card">
+      <div class="c-label">Terapia</div>
+      <p>Começou, mas desistiu por custo, por não sentir avanço concreto ou por não encontrar terapeuta que entendesse a dimensão espiritual da dor.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Aconselhamento pastoral</div>
+      <p>Sentiu-se julgada ou recebeu respostas genéricas: "ore e espere", "Deus tem um plano", "deveria ter suportado mais".</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Grupos de mulheres na igreja</div>
+      <p>Dinâmica superficial. Ninguém falava de dependência emocional, autoabandono ou limite de fato. Nada que gerasse movimento.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Livros de autoajuda</div>
+      <p>Leu, se emocionou, sublinhou frases — mas não traduziu nada em mudança real de comportamento ou padrão.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Redes sociais</div>
+      <p>Segue perfis de cura emocional há meses. O conteúdo a mantém identificada com a dor sem gerar nenhum movimento para fora dela.</p>
+    </div>
+    <div class="card-dark">
+      <div class="c-label">Conclusão estratégica</div>
+      <p>Daniela não é iniciante em busca de ajuda. Ela está cansada de buscar ajuda que não a move. A oferta precisa se posicionar como o próximo passo estruturado — não como a primeira opção para quem nunca tentou nada.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p class="block-label">Medos e objeções de compra</p>
+      <ul class="item-list">
+        <li><span class="im">·</span>Medo de se escolher e ser chamada de egoísta</li>
+        <li><span class="im">·</span>Medo de colocar limites e ser vista como fria ou rebelde</li>
+        <li><span class="im">·</span>Medo de investir em si e depois se culpar</li>
+        <li><span class="im">·</span>"Será que investir em mim vai contra minha fé?"</li>
+        <li><span class="im">·</span>"Será que ela vai me julgar pelo que vivi?"</li>
+        <li><span class="im">·</span>"Será que eu vou dar conta de mexer nessa dor?"</li>
+        <li><span class="im">·</span>"Buscar ajuda significa que minha fé é fraca?"</li>
+        <li><span class="im">·</span>"Será que vou ter que expor minha história?"</li>
+      </ul>
+    </div>
+    <div>
+      <p class="block-label">Crenças limitantes a combater</p>
+      <ul class="item-list">
+        <li><span class="im">·</span>Se eu me priorizar, estou sendo egoísta</li>
+        <li><span class="im">·</span>Fé é esperar, mesmo que doa</li>
+        <li><span class="im">·</span>Tenho que aguentar calada para provar maturidade</li>
+        <li><span class="im">·</span>Se perdoar, preciso permitir o mesmo acesso de volta</li>
+        <li><span class="im">·</span>Limite é falta de amor</li>
+        <li><span class="im">·</span>Autonomia feminina ameaça meus princípios cristãos</li>
+        <li><span class="im">·</span>Minha história ficou manchada</li>
+        <li><span class="im">·</span>Só vou ficar bem quando alguém reconhecer meu valor</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 4 — JORNADA DE COMPRA
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-jornada">
+<div class="page">
+  <div class="section-title">04</div>
+  <h2 class="section-heading">Jornada de Consciência até a Compra</h2>
+
+  <div class="journey spacer">
+    <div class="j-step" style="background:var(--ink)">
+      <div class="j-num" style="color:var(--rust)">01</div>
+      <div class="j-title" style="color:var(--dust)">Identificação</div>
+      <div class="j-desc" style="color:#9a8878">Ela vê um conteúdo e pensa: "Parece que estão falando exatamente de mim."</div>
+    </div>
+    <div class="j-step">
+      <div class="j-num">02</div>
+      <div class="j-title">Nomeação</div>
+      <div class="j-desc">Entende que o que sente tem nome: culpa, dependência emocional, autoabandono, perda de identidade, medo de julgamento.</div>
+    </div>
+    <div class="j-step">
+      <div class="j-num">03</div>
+      <div class="j-title">Consciência do custo</div>
+      <div class="j-desc">Percebe que continuar assim afeta fé, autoestima, maternidade, trabalho, corpo, sono, decisões e alegria de viver.</div>
+    </div>
+    <div class="j-step">
+      <div class="j-num">04</div>
+      <div class="j-title">Quebra de crença</div>
+      <div class="j-desc">Entende que se escolher não é egoísmo, limite não é falta de amor, responsabilidade não é culpa eterna.</div>
+    </div>
+    <div class="j-step" style="background:var(--warm)">
+      <div class="j-num">05</div>
+      <div class="j-title">Reconhecimento da solução</div>
+      <div class="j-desc">Percebe que não precisa apenas superar uma fase — precisa reconstruir a relação consigo mesma.</div>
+    </div>
+    <div class="j-step" style="background:var(--warm)">
+      <div class="j-num">06</div>
+      <div class="j-title">Confiança na marca</div>
+      <div class="j-desc">Sente que Flávia entende a dor sem julgar, mas também não a deixa acomodada no lugar de vítima.</div>
+    </div>
+    <div class="j-step" style="background:var(--warm)">
+      <div class="j-num">07</div>
+      <div class="j-title">Desejo de condução</div>
+      <div class="j-desc">Percebe que sozinha está repetindo ciclos. Começa a desejar um caminho com estrutura real.</div>
+    </div>
+    <div class="j-step" style="background:var(--rust);color:#fff">
+      <div class="j-num" style="color:rgba(255,255,255,.2)">08</div>
+      <div class="j-title" style="color:#fff">Compra</div>
+      <div class="j-desc" style="color:rgba(255,255,255,.8)">Decide investir porque entende que continuar em segundo plano custa mais caro do que se reconstruir.</div>
+    </div>
+  </div>
+
+  <div style="background:#fff;border:1px solid var(--light-rule);padding:24px 28px;display:flex;align-items:center;gap:20px;margin-bottom:40px">
+    <div style="font-family:'Playfair Display',serif;font-size:11px;color:var(--rust);font-weight:700;letter-spacing:.08em;white-space:nowrap">PONTO DECISIVO</div>
+    <div style="width:1px;height:36px;background:var(--light-rule);flex-shrink:0"></div>
+    <p style="font-size:13px;color:var(--mid);line-height:1.6">Ela compra quando sente três coisas ao mesmo tempo: <strong style="color:var(--ink)">fui compreendida</strong>, <strong style="color:var(--ink)">não fui julgada</strong> e <strong style="color:var(--ink)">existe um caminho responsável para sair desse lugar.</strong></p>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label" style="margin-bottom:20px">O que ela precisa ouvir da marca para confiar</p>
+  <div class="grid-3">
+    <div class="card"><p style="color:var(--ink)">"Você não precisa se abandonar para provar amor, fé ou maturidade."</p></div>
+    <div class="card"><p style="color:var(--ink)">"Você pode ser cristã e ainda assim colocar limites."</p></div>
+    <div class="card"><p style="color:var(--ink)">"Sua dor merece acolhimento, mas sua vida precisa voltar a ter movimento."</p></div>
+    <div class="card"><p style="color:var(--ink)">"Deus não precisa da sua culpa para conduzir sua reconstrução."</p></div>
+    <div class="card"><p style="color:var(--ink)">"Você pode voltar a ser a pessoa mais importante da sua vida sem se tornar fria ou rebelde."</p></div>
+    <div class="card"><p style="color:var(--ink)">"Protagonismo não é controlar tudo. É assumir responsabilidade pela própria vida."</p></div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 5 — TOM DE VOZ
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-voz">
+<div class="page">
+  <div class="section-title">05</div>
+  <h2 class="section-heading">Tom de Voz e Linguagem</h2>
+
+  <p class="block-label" style="margin-bottom:20px">Os 5 pilares do jeito de falar</p>
+  <div class="grid-3 spacer">
+    <div class="card-dark">
+      <div class="c-label">Pilar 1</div>
+      <div class="c-title" style="color:var(--dust)">Nomeação precisa</div>
+      <p>Não "se sentir perdida" — mas perda de identidade construída ao longo de anos. Não "se sentir mal" — mas dependência emocional, culpa que ficou sem motivo real. Nomear com precisão é a principal entrega.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Pilar 2</div>
+      <div class="c-title">Acolhimento sem acomodação</div>
+      <p>"Eu entendo o que você viveu e não vou diminuir isso, mas também não vou te deixar construir identidade em cima de uma ferida." Esse equilíbrio é o diferencial.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Pilar 3</div>
+      <div class="c-title">Confronto honesto, sem crueldade</div>
+      <p>Existe um momento de choque de realidade que não é agressividade, é clareza. Funciona porque vem de quem já esteve no mesmo lugar, não de quem olha de cima.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Pilar 4</div>
+      <div class="c-title">Fé como parte da vida</div>
+      <p>A fé aparece como algo que convive com terapia, com limites, com decisões difíceis e com recomeços reais. Não resolve tudo automaticamente, não funciona como atalho emocional.</p>
+    </div>
+    <div class="card">
+      <div class="c-label">Pilar 5</div>
+      <div class="c-title">Autoridade vivida, não decorada</div>
+      <p>Não cita manual. Narra o que atravessou e extrai o princípio de lá. A história pessoal entra para cumprir função no conteúdo, nunca como performance de sofrimento.</p>
+    </div>
+    <div class="card-rust">
+      <div class="c-label">Regra de ouro</div>
+      <div class="c-title">Escrevo para fazer pensar</div>
+      <p>Não para fazer chorar. Se o texto só emociona sem gerar clareza ou movimento interno, ele falhou. Emoção pode acontecer como consequência. Nunca como objetivo.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label" style="margin-bottom:16px">Comparativo de voz</p>
+  <div class="voice-compare spacer">
+    <div class="vc-col">
+      <div class="vc-label">Linguagem genérica — evitar</div>
+      <p class="vc-text">"Você foi criada para ser amada, respeitada e valorizada. Às vezes a vida nos faz esquecer disso. Mas você é mais forte do que imagina. É hora de se redescobrir e florescer!"</p>
+      <br>
+      <p class="vc-text">"Força não é aguentar calada. Às vezes, força é exatamente parar de aguentar."<br><em style="font-size:11px;color:#c0392b">(curto demais, vira meme motivacional)</em></p>
+    </div>
+    <div class="vc-col">
+      <div class="vc-label">Voz da Flávia</div>
+      <p class="vc-text">Uma mulher não perde a noção do próprio valor da noite para o dia. Isso acontece aos poucos, dentro de relações que diminuem, ambientes que culpam, dinâmicas que vão silenciando o que ela pensa, o que ela sente e o que ela aceita. Quando ela percebe, já não sabe mais bem quem é fora daquilo tudo. Reconstrução começa quando ela para de procurar essa resposta em quem a apagou e começa a procurar em si mesma.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="two-col spacer">
+    <div>
+      <p class="block-label">Palavras e expressões que fazem parte do registro</p>
+      <div class="tags">
+        <span class="tag">consciência</span>
+        <span class="tag">padrão</span>
+        <span class="tag">reconhecer</span>
+        <span class="tag">encerrar ciclos</span>
+        <span class="tag">posicionamento</span>
+        <span class="tag">responsabilidade</span>
+        <span class="tag">protagonismo</span>
+        <span class="tag">coerência</span>
+        <span class="tag">dignidade</span>
+        <span class="tag">maturidade emocional</span>
+        <span class="tag">clareza</span>
+        <span class="tag">reconstrução</span>
+        <span class="tag">identidade</span>
+        <span class="tag">dependência emocional</span>
+        <span class="tag">limites</span>
+        <span class="tag">atravessar</span>
+        <span class="tag">nomear</span>
+        <span class="tag">fé madura</span>
+        <span class="tag">ciclos que adoecem</span>
+        <span class="tag">coragem concreta</span>
+        <span class="tag">decisão</span>
+        <span class="tag">processo</span>
+      </div>
+    </div>
+    <div>
+      <p class="block-label">Como ela faz perguntas</p>
+      <div class="card">
+        <p style="color:var(--mid);margin-bottom:14px">Não pergunta para validar a dor — pergunta para interromper um padrão.</p>
+        <p style="color:#c0392b;font-size:12px;margin-bottom:6px">❌ "Você já parou para pensar no quanto você sofreu?"</p>
+        <p style="color:var(--sage);font-size:12px">✓ "O que você vai fazer a partir daqui?"</p>
+        <p style="color:var(--mid);margin-top:12px;font-size:13px">A primeira mantém a mulher dentro da dor. A segunda exige que ela se mova. As perguntas apontam sempre para consciência ou decisão, nunca para mais ruminação.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="block-label" style="margin-bottom:14px">Proibições absolutas de linguagem</p>
+  <div class="prohib-grid">
+    <div class="prohib-item">"liberdade financeira"</div>
+    <div class="prohib-item">"vida dos sonhos"</div>
+    <div class="prohib-item">"fórmula exclusiva"</div>
+    <div class="prohib-item">"segredo"</div>
+    <div class="prohib-item">"destravar"</div>
+    <div class="prohib-item">"virada de chave"</div>
+    <div class="prohib-item">"próximo nível"</div>
+    <div class="prohib-item">"sucesso inevitável"</div>
+    <div class="prohib-item">"jornada" (sentido coach)</div>
+    <div class="prohib-item">"florescer" / "abundância" / "manifestar"</div>
+    <div class="prohib-item">"Deus vai te honrar" / "confie e espere"</div>
+    <div class="prohib-item">"melhor versão de você"</div>
+    <div class="prohib-item">"se cure e siga em frente"</div>
+    <div class="prohib-item">"desperte para" / "quebre as correntes"</div>
+    <div class="prohib-item">Três palavras soltas no final para criar impacto</div>
+    <div class="prohib-item">Travessão em qualquer hipótese</div>
+    <div class="prohib-item">Série de frases curtíssimas com ponto onde caberia vírgula</div>
+    <div class="prohib-item">"Não é sobre X, é sobre Y"</div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PAINEL 6 — INIMIGO E BANDEIRAS
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-inimigo">
+<div class="page">
+  <div class="section-title">06</div>
+  <h2 class="section-heading">Inimigo Comum e Bandeiras</h2>
+
+  <div class="quote spacer">
+    <p>Meu inimigo não é uma pessoa específica. É o sistema de crenças, relações e padrões que faz mulheres inteligentes, fortes e sensíveis esquecerem o próprio valor.</p>
+  </div>
+
+  <p class="block-label" style="margin-bottom:16px">O que a marca combate — em detalhe</p>
+  <div class="enemy-grid spacer">
+    <div class="enemy-item">
+      <strong>Dependência emocional</strong>
+      Disfarçada de lealdade, paciência, submissão ou esperança espiritual mal direcionada. Daniela confunde amor com necessidade, perdão com retorno ao ciclo.
+    </div>
+    <div class="enemy-item">
+      <strong>Culpa religiosa instrumentalizada</strong>
+      Fé usada para justificar desrespeito, abuso emocional, silenciamento e permanência em dinâmicas que adoecem. A mensagem implícita: suportar mais é prova de fé.
+    </div>
+    <div class="enemy-item">
+      <strong>Baixa autoestima crônica</strong>
+      Mulheres que organizam a vida inteira a partir da validação de quem as feriu, diminuiu ou silenciou. A identidade construída sobre a dor do que aconteceu.
+    </div>
+    <div class="enemy-item">
+      <strong>Transformação superficial</strong>
+      Promessas rápidas, frases prontas e conteúdo que emociona mulheres sem ajudá-las a tomar consciência dos próprios padrões. Identificação sem movimento.
+    </div>
+    <div class="enemy-item">
+      <strong>Silenciamento feminino</strong>
+      Ambientes religiosos ou sociais que usam fé, pertencimento ou aparência para calar mulheres feridas, exigir performance de força e impedir posicionamento real.
+    </div>
+    <div class="enemy-item">
+      <strong>Autoabandono disfarçado de virtude</strong>
+      A ideia de que ser forte é aguentar tudo, que cuidar de si é egoísmo, que priorizar os outros é sinal de maturidade espiritual. A mulher que nunca está na própria fila.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="block-label" style="margin-bottom:16px">Bandeiras inegociáveis</p>
+  <div class="grid-2">
+    <ul class="item-list">
+      <li><span class="im">→</span>Uma mulher cristã não precisa permanecer presa à dor para provar fé, maturidade ou fidelidade a Deus.</li>
+      <li><span class="im">→</span>Separação não define o valor de uma mulher nem encerra sua possibilidade de viver com dignidade.</li>
+      <li><span class="im">→</span>Discurso religioso não pode ser usado para justificar desrespeito, abuso emocional, culpa permanente ou silenciamento feminino.</li>
+      <li><span class="im">→</span>Amor saudável nasce de escolha, respeito, reciprocidade e coerência — não de necessidade ou medo de ficar sozinha.</li>
+      <li><span class="im">→</span>Perdão não significa voltar para ciclos que adoecem nem permitir que a mesma ferida continue sendo aberta.</li>
+      <li><span class="im">→</span>Uma mulher pode ser sensível e firme ao mesmo tempo, ter fé e ter limites, amar e ainda assim escolher ir embora quando não existe respeito.</li>
+    </ul>
+    <ul class="item-list">
+      <li><span class="im">→</span>Dependência emocional disfarçada de lealdade, paciência, submissão ou esperança espiritual precisa ser nomeada pelo que é.</li>
+      <li><span class="im">→</span>Reconstrução emocional exige verdade, terapia quando necessário, fé, rede de apoio, disciplina, decisão e tempo — não frases de consolo.</li>
+      <li><span class="im">→</span>Nenhuma transformação superficial ou promessa rápida. Conteúdo que emociona sem gerar consciência de padrão falhou.</li>
+      <li><span class="im">→</span>Nenhuma mulher deve ser reduzida ao casamento que terminou, à dor que viveu, ao julgamento que recebeu.</li>
+      <li><span class="im">→</span>Fé não anula autonomia. Educação emocional não anula espiritualidade. Protagonismo feminino não anula princípios.</li>
+      <li><span class="im">→</span>Sempre haverá espaço para mulheres que decidem se levantar com verdade, responsabilidade e coragem, sem pedir permissão para reconstruir a própria vida.</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
